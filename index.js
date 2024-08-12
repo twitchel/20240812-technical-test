@@ -36,7 +36,30 @@ const MAX_IN_PERIOD = 1440;
  * ```
  */
 
-const calculateEnergyUsageSimple = (profile) => {};
+const STATE_ON = "on";
+const STATE_OFF = "off";
+
+const calculateEnergyUsageSimple = (profile) => {
+  let totalEnergyUsage = 0;
+  let currentState = profile.initial;
+  let previousTimestamp = 0;
+
+  profile.events.forEach((powerEvent) => {
+    if (currentState === STATE_ON) {
+      totalEnergyUsage += powerEvent.timestamp - previousTimestamp;
+    }
+
+    currentState = powerEvent.state;
+    previousTimestamp = powerEvent.timestamp;
+  });
+
+  // if the appliance is still on after the last state change event we need to add the remaining time
+  if (currentState === STATE_ON) {
+    totalEnergyUsage += MAX_IN_PERIOD - previousTimestamp;
+  }
+
+  return totalEnergyUsage;
+};
 
 /**
  * PART 2
