@@ -102,6 +102,7 @@ const calculateEnergyUsageSimple = (profile) => {
 const calculateEnergySavings = (profile) => {
   let totalEnergySavings = 0;
   let currentState = profile.initial;
+  let previousTimestamp = 0;
 
   profile.events.forEach((powerEvent) => {
     // if we're trying to handle the same power state twice in a row we can skip it
@@ -110,15 +111,16 @@ const calculateEnergySavings = (profile) => {
     }
 
     if (currentState === STATE_ON && powerEvent.state === STATE_AUTO_OFF) {
-      totalEnergySavings += powerEvent.timestamp;
+      totalEnergySavings += powerEvent.timestamp - previousTimestamp;
     }
 
     currentState = powerEvent.state;
+    previousTimestamp = powerEvent.timestamp;
   });
 
   // If last recorded state was auto-off, add the rest of the time in the day to energy saved
   if (currentState === STATE_AUTO_OFF) {
-    totalEnergySavings += MAX_IN_PERIOD
+    totalEnergySavings += MAX_IN_PERIOD - previousTimestamp;
   }
 
   return totalEnergySavings;
