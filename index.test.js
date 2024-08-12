@@ -153,6 +153,18 @@ describe("calculateEnergySavings", () => {
     };
     expect(calculateEnergySavings(usageProfile)).toEqual(MAX_IN_PERIOD - 320);
   });
+
+  it("should calculate energy savings correctly on silly data (example 3)", () => {
+    const usageProfile = {
+      initial: "off",
+      events: [
+        { state: "on", timestamp: 1000 },
+        { state: "auto-off", timestamp: 1100 },
+        { state: "auto-off", timestamp: 1200 },
+      ],
+    };
+    expect(calculateEnergySavings(usageProfile)).toEqual(340);
+  });
 });
 
 // Part 3
