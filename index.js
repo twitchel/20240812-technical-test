@@ -110,6 +110,11 @@ const calculateEnergySavings = (profile) => {
       return;
     }
 
+    // if the last recorded state was auto-off and the current state is off, we can skip it
+    if (currentState === STATE_AUTO_OFF && powerEvent.state === STATE_OFF) {
+      return
+    }
+
     if (currentState === STATE_AUTO_OFF && powerEvent.state === STATE_ON) {
       totalEnergySavings += powerEvent.timestamp - previousTimestamp;
     }
