@@ -196,11 +196,21 @@ const getEnergyUsageProfileForDay = (monthUsageProfile, day) => {
 }
 
 const getEnergyEventsForDay = (monthUsageProfile, day) => {
+  const dayTimestampStart = (day - 1) * MAX_IN_PERIOD;
+  const dayTimestampEnd = dayTimestampStart + MAX_IN_PERIOD - 1;
+
   // fetch events for day (between min/max timestamps)
+  const events = monthUsageProfile.events.filter((event) => {
+    return event.timestamp >= dayTimestampStart && event.timestamp <= dayTimestampEnd;
+  });
 
   // convert original timestamp to day timestamp (timestamp % MAX_IN_PERIOD)
-
-  return []
+  return events.map((event) => {
+    return {
+      state: event.state,
+      timestamp: event.timestamp % MAX_IN_PERIOD,
+    };
+  });
 }
 
 module.exports = {
