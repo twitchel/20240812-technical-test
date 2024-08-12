@@ -38,6 +38,7 @@ const MAX_IN_PERIOD = 1440;
 
 const STATE_ON = "on";
 const STATE_OFF = "off";
+const STATE_AUTO_OFF = "auto-off";
 
 const calculateEnergyUsageSimple = (profile) => {
   let totalEnergyUsage = 0;
