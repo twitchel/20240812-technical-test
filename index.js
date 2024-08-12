@@ -159,7 +159,49 @@ const calculateEnergySavings = (profile) => {
 
 const isInteger = (number) => Number.isInteger(number);
 
-const calculateEnergyUsageForDay = (monthUsageProfile, day) => {};
+const calculateEnergyUsageForDay = (monthUsageProfile, day) => {
+  // validation
+  validateDay(day);
+
+  // get energy profile for day
+  const profile = getEnergyUsageProfileForDay(monthUsageProfile, day);
+
+  return calculateEnergyUsageSimple(profile);
+};
+
+const validateDay = (day) => {
+  if (!isInteger(day)) {
+    throw new Error(`Day ${day} must be an integer`);
+  }
+
+  if (day < 1 || day > 365) {
+    throw new Error(`${day} day out of range`)
+  }
+}
+
+const getEnergyUsageProfileForDay = (monthUsageProfile, day) => {
+  // skeleton profile
+  const profile = {
+    initial: null,
+    events: [],
+  }
+  
+  // get energy events for day
+
+  // traverse back through previous days to get initial state
+
+  // if no initial state, set to month's initial state
+
+  return profile;
+}
+
+const getEnergyEventsForDay = (monthUsageProfile, day) => {
+  // fetch events for day (between min/max timestamps)
+
+  // convert original timestamp to day timestamp (timestamp % MAX_IN_PERIOD)
+
+  return []
+}
 
 module.exports = {
   calculateEnergyUsageSimple,
