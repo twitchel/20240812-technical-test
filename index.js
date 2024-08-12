@@ -112,7 +112,7 @@ const calculateEnergySavings = (profile) => {
 
     // if the last recorded state was auto-off and the current state is off, we can skip it
     if (currentState === STATE_AUTO_OFF && powerEvent.state === STATE_OFF) {
-      return
+      return;
     }
 
     if (currentState === STATE_AUTO_OFF && powerEvent.state === STATE_ON) {
@@ -175,16 +175,16 @@ const validateDay = (day) => {
   }
 
   if (day < 1 || day > 365) {
-    throw new Error(`${day} day out of range`)
+    throw new Error(`${day} day out of range`);
   }
-}
+};
 
 const getEnergyUsageProfileForDay = (monthUsageProfile, day) => {
   // skeleton profile with energy events for day
   const profile = {
     initial: null,
     events: getEnergyEventsForDay(monthUsageProfile, day),
-  }
+  };
 
   // traverse back through previous days to get initial state
   let previousDay = day - 1;
@@ -204,7 +204,7 @@ const getEnergyUsageProfileForDay = (monthUsageProfile, day) => {
   }
 
   return profile;
-}
+};
 
 const getEnergyEventsForDay = (monthUsageProfile, day) => {
   const dayTimestampStart = (day - 1) * MAX_IN_PERIOD;
@@ -212,7 +212,9 @@ const getEnergyEventsForDay = (monthUsageProfile, day) => {
 
   // fetch events for day (between min/max timestamps)
   const events = monthUsageProfile.events.filter((event) => {
-    return event.timestamp >= dayTimestampStart && event.timestamp <= dayTimestampEnd;
+    return (
+      event.timestamp >= dayTimestampStart && event.timestamp <= dayTimestampEnd
+    );
   });
 
   // convert original timestamp to day timestamp (timestamp % MAX_IN_PERIOD)
@@ -222,7 +224,7 @@ const getEnergyEventsForDay = (monthUsageProfile, day) => {
       timestamp: event.timestamp % MAX_IN_PERIOD,
     };
   });
-}
+};
 
 module.exports = {
   calculateEnergyUsageSimple,
