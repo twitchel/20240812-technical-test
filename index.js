@@ -180,17 +180,28 @@ const validateDay = (day) => {
 }
 
 const getEnergyUsageProfileForDay = (monthUsageProfile, day) => {
-  // skeleton profile
+  // skeleton profile with energy events for day
   const profile = {
     initial: null,
-    events: [],
+    events: getEnergyEventsForDay(monthUsageProfile, day),
   }
-  
-  // get energy events for day
 
   // traverse back through previous days to get initial state
+  let previousDay = day - 1;
+  while (profile.initial === null && previousDay > 0) {
+    const events = getEnergyEventsForDay(monthUsageProfile, previousDay);
+
+    if (events.length) {
+      profile.initial = events[events.length - 1]?.state;
+    }
+
+    previousDay--;
+  }
 
   // if no initial state, set to month's initial state
+  if (profile.initial === null) {
+    profile.initial = monthUsageProfile.initial;
+  }
 
   return profile;
 }
