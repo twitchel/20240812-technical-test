@@ -110,7 +110,7 @@ const calculateEnergySavings = (profile) => {
       return;
     }
 
-    if (currentState === STATE_ON && powerEvent.state === STATE_AUTO_OFF) {
+    if (currentState === STATE_AUTO_OFF && powerEvent.state === STATE_ON) {
       totalEnergySavings += powerEvent.timestamp - previousTimestamp;
     }
 
