@@ -116,6 +116,11 @@ const calculateEnergySavings = (profile) => {
     currentState = powerEvent.state;
   });
 
+  // If last recorded state was auto-off, add the rest of the time in the day to energy saved
+  if (currentState === STATE_AUTO_OFF) {
+    totalEnergySavings += MAX_IN_PERIOD
+  }
+
   return totalEnergySavings;
 };
 
