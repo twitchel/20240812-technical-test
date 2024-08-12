@@ -99,7 +99,25 @@ const calculateEnergyUsageSimple = (profile) => {
  * and not manual intervention.
  */
 
-const calculateEnergySavings = (profile) => {};
+const calculateEnergySavings = (profile) => {
+  let totalEnergySavings = 0;
+  let currentState = profile.initial;
+
+  profile.events.forEach((powerEvent) => {
+    // if we're trying to handle the same power state twice in a row we can skip it
+    if (currentState === powerEvent.state) {
+      return;
+    }
+
+    if (currentState === STATE_ON && powerEvent.state === STATE_AUTO_OFF) {
+      totalEnergySavings += powerEvent.timestamp;
+    }
+
+    currentState = powerEvent.state;
+  });
+
+  return totalEnergySavings;
+};
 
 /**
  * PART 3
