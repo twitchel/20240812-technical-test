@@ -45,6 +45,11 @@ const calculateEnergyUsageSimple = (profile) => {
   let previousTimestamp = 0;
 
   profile.events.forEach((powerEvent) => {
+    // if we're trying to handle the same power state twice in a row we can skip it
+    if (currentState === powerEvent.state) {
+      return;
+    }
+
     if (currentState === STATE_ON) {
       totalEnergyUsage += powerEvent.timestamp - previousTimestamp;
     }
